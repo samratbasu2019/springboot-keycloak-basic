@@ -37,7 +37,7 @@ public class ProductAppApplication {
 @Controller
 class ProductController {
 
-	@GetMapping(path = "/products")
+	@GetMapping(path = "/api/products")
 	public String getProducts(Model model){
 		model.addAttribute("products", Arrays.asList("iPad","iPhone","iPod"));
 		return "products";
@@ -83,7 +83,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 		super.configure(http);
 		http
 				.authorizeRequests()
-				.antMatchers("/products*").hasRole("user")
+				.antMatchers("/api/products").hasRole("b2c")
 				.anyRequest().permitAll();
 	}
 }

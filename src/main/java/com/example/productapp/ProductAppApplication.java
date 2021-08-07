@@ -7,6 +7,8 @@ import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticatio
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.representations.IDToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,10 +29,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Map;
 
 @SpringBootApplication
 public class ProductAppApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ProductAppApplication.class, args);
 	}
@@ -38,14 +40,23 @@ public class ProductAppApplication {
 
 @Controller
 class ProductController {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 	@GetMapping(path = "/api/products")
 	public String getProducts(Model model, HttpServletRequest request){
 		KeycloakAuthenticationToken principal = (KeycloakAuthenticationToken) request.getUserPrincipal();
 		String userId = principal.getAccount().getKeycloakSecurityContext().getIdToken().getSubject();
 		String email = principal.getAccount().getKeycloakSecurityContext().getIdToken().getEmail();
 		IDToken token = principal.getAccount().getKeycloakSecurityContext().getIdToken();
-		System.out.println("Logged-in userid is : " + userId + " email " + email);
+		Map<String, Object> customClaims = token.getOtherClaims();
+		String institutionID = null, phoneNumber = null;
+		if (customClaims.containsKey("institutionID")) {
+			institutionID = String.valueOf(customClaims.get("institutionID"));
+		}
+		if (customClaims.containsKey("phoneNumber")) {
+			phoneNumber = String.valueOf(customClaims.get("phoneNumber"));
+		}
+		LOGGER.info("Logged-in userid is {} email {} institutionID {} phoneNumber {}", userId,
+				email, institutionID, phoneNumber);
 
 		model.addAttribute("products", Arrays.asList("iPad","iPhone","iPod"));
 		return "products";

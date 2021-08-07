@@ -5,6 +5,8 @@ import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.IDToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,7 +40,13 @@ public class ProductAppApplication {
 class ProductController {
 
 	@GetMapping(path = "/api/products")
-	public String getProducts(Model model){
+	public String getProducts(Model model, HttpServletRequest request){
+		KeycloakAuthenticationToken principal = (KeycloakAuthenticationToken) request.getUserPrincipal();
+		String userId = principal.getAccount().getKeycloakSecurityContext().getIdToken().getSubject();
+		String email = principal.getAccount().getKeycloakSecurityContext().getIdToken().getEmail();
+		IDToken token = principal.getAccount().getKeycloakSecurityContext().getIdToken();
+		System.out.println("Logged-in userid is : " + userId + " email " + email);
+
 		model.addAttribute("products", Arrays.asList("iPad","iPhone","iPod"));
 		return "products";
 	}

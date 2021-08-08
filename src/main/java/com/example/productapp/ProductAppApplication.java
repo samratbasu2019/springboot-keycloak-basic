@@ -58,7 +58,7 @@ class ProductController {
 		LOGGER.info("Logged-in userid is {} email {} institutionID {} phoneNumber {}", userId,
 				email, institutionID, phoneNumber);
 
-		model.addAttribute("products", Arrays.asList("iPad","iPhone","iPod"));
+		model.addAttribute("products", Arrays.asList("b2c Service","Career Path","Payment"));
 		return "products";
 	}
 

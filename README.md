@@ -1,16 +1,6 @@
 Easily Secure your Spring Boot Apps with Keycloak
 =================================================
+Read this document to create social-login in key-cloak for google https://keycloakthemes.com/blog/how-to-setup-sign-in-with-google-using-keycloak
 
-This is the support repository for :
-- This [Blog Post](https://developers.redhat.com/blog/?p=432287)
-- These screencast : [Part 1](https://youtu.be/UUWyu1kG6YI) and [Part 2]()
-
-The full instructions to setup the [Keycloak Server](http://www.keycloak.org/downloads.html) can be found in the Blog Post.
-
-
-To start the app from the command line :
-```
-
-mvn clean spring-boot:run
-
-```
+Here is sample social google login with hackathon.infy2020@gmail.com
+https://console.cloud.google.com/apis/credentials?authuser=1&project=reverberant-kit-322217

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,8 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +42,7 @@ public class ProductAppApplication {
 }
 
 @Controller
-class ProductController {
+class ProductController implements ErrorController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 	@GetMapping(path = "/api/products")
 	public String getProducts(Model model, HttpServletRequest request){
@@ -66,6 +69,15 @@ class ProductController {
 	public String logout(HttpServletRequest request) throws ServletException {
 		request.logout();
 		return "/";
+	}
+
+	private final static String PATH = "/error";
+	@Override
+	@RequestMapping(PATH)
+	@ResponseBody
+	public String getErrorPath() {
+		// TODO Auto-generated method stub
+		return "No Mapping Found";
 	}
 }
 

@@ -101,6 +101,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	{
 		super.configure(http);
 		http
+				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/api/products").hasRole("b2c")
 				.anyRequest().permitAll();
